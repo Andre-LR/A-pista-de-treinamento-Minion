@@ -1,16 +1,12 @@
-package entities;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Stack;
 
 public class Graph {
     public ArrayList<Vertice> listaVertices = new ArrayList<>();
-    private int qtdVertices;
-
+    private int qtdVertices = 0;
+    
     public Graph (){}
 
     public ArrayList<Vertice> getListaVertices(){
@@ -21,8 +17,18 @@ public class Graph {
         return qtdVertices;
     }
 
+    public Vertice getVerticeDaPosicao(int posicao){
+        for (Vertice vertice : listaVertices) {
+            if(vertice.getPosicao() == posicao){
+                return vertice;
+            }
+        }
+        return null;
+    }
+
     //Adicionar novo vértice no Grafo
     public void addVertice(Vertice vertice) {
+        vertice.setPosicao(qtdVertices);
         ArrayList<Vertice> verticesAdj = new ArrayList<Vertice>();
         vertice.setVerticesAdj(verticesAdj);
         listaVertices.add(vertice);
@@ -54,14 +60,24 @@ public class Graph {
             vertice02.getVerticesAdj().remove(vertice01);
     }
     
-    //Retornar lista de vertices adjacentes de um vértice
-    public String getVerticesAdj(String nomeVertice) {
+    //Printa lista de vertices adjacentes de um vértice
+    public String verticesAdjacentesToString(String nomeVertice) {
         for (Vertice vertice : listaVertices){
             if(vertice.getNome().equals(nomeVertice)){
-               return vertice.getVerticesAdjacentes();
+               return vertice.verticesAdjacentesToString();
             }
         }
         return "Nenhum vértice encontrado com esse nome";
+    }
+
+    //Retornar lista da posição dos vertices adjacentes de um vértice
+    public ArrayList<Integer> getListaPosicaoVerticesAdj(int posicaovertice) {
+        for (Vertice vertice : listaVertices){
+            if(vertice.getPosicao() == posicaovertice){
+               return vertice.getListaPosicaoVerticesAdj();
+            }
+        }
+        return null;
     }
 
     //retorna todos os vértices do grafo e seus vértices adjacentes
@@ -69,7 +85,7 @@ public class Graph {
         String txt = "";
 
         for (Vertice vertice : listaVertices) {
-            vertice.getVerticesAdjacentes();
+            txt = txt + vertice.verticesAdjacentesToString();
        }
         return txt;
     }

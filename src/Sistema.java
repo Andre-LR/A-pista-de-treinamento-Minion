@@ -1,7 +1,3 @@
-import entities.GrafoObstaculo;
-import entities.Graph;
-import entities.Vertice;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,7 +8,6 @@ import java.util.Scanner;
 public class Sistema {
     Scanner in = new Scanner(System.in);   
     Graph graph = new Graph(); 
-    List<GrafoObstaculo> listaObstaculos = new ArrayList<>();
     
     public boolean ignoraPrimeiraLinha(String valor){
         try {
@@ -21,15 +16,6 @@ public class Sistema {
             return false;
         }
         return true;
-    }
-
-    public String showObstaculos(){
-        String txt="";
-        for (GrafoObstaculo obstaculo : listaObstaculos) {
-            txt = txt + obstaculo.toString();
-        }
-
-        return txt;
     }
 
     public void lerArquivo(){                
@@ -118,9 +104,13 @@ public class Sistema {
         }
         finally {
             //System.out.println(graph.getAllVertices());
-            System.out.println(graph.getVerticesAdj("mhaik"));
+            //System.out.println(graph.verticesAdjacentesToString("mhaik"));
+            System.out.println(" ");
+            CaminhamentoProfundidade cp = new CaminhamentoProfundidade(graph, 0);
+
+            //graph.topoSort();
             System.out.println("Operação finalizada...");
-            graph.topoSort();
+            //graph.topoSort();
         }
     }
 }
