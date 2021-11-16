@@ -120,6 +120,7 @@ public class Sistema {
             //System.out.println(graph.getAllVertices());
             System.out.println(graph.getVerticesAdj("mhaik"));
             System.out.println("Operação finalizada...");
+            graph.topoSort();
         }
     }
 }
