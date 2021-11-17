@@ -6,8 +6,23 @@ import java.util.Map;
 public class Graph {
     public ArrayList<Vertice> listaVertices = new ArrayList<>();
     private int qtdVertices = 0;
+    //vertices que podem ser executados, pois não possuem dependencias
+    private ArrayList<Vertice> disponiveis = new ArrayList<>();
+    //vertices que estão em andamento, vértices que estão sendo executados pelos minions
+    private ArrayList<Vertice> verticesEmAndamento = new ArrayList<>();
+
+    public Graph (){
+        for (Vertice vertice : listaVertices) {
+            if(vertice.getListaDependencia().isEmpty()){
+                disponiveis.add(vertice);
+            }
+        }
+        Collections.sort(disponiveis);
+        
+    }
+
     
-    public Graph (){}
+
 
     public ArrayList<Vertice> getListaVertices(){
         return listaVertices;
@@ -25,6 +40,20 @@ public class Graph {
         }
         return null;
     }
+
+    //Atualiza os vértices disponiveis para serem executados verificando cada um se possuem algum vertice na sua lista de dependencia
+    public void atualizaDisponiveis(){
+        for (Vertice vertice : listaVertices) {
+            //Se o vertice analisado já não está na lista dos disponiveis
+            //Verifica se ele tem algum vertice na sua lista de dependencia
+            //Se estiver vazia, ele passa a integrar os vertices disponiveis
+            if(!disponiveis.contains(vertice)){
+                if(vertice.getListaDependencia().isEmpty()){
+                    disponiveis.add(vertice);
+                }
+            }
+        }
+    } 
 
     //Adicionar novo vértice no Grafo
     public void addVertice(Vertice vertice) {
@@ -48,6 +77,8 @@ public class Graph {
     public void addAresta(Vertice vertice01, Vertice vertice02) {
         vertice01.getVerticesAdj().add(vertice02);
         vertice02.getVerticesAdj().add(vertice01);
+
+        vertice02.setListaDependencia(vertice01);
     }
 
     //Remove Aresta

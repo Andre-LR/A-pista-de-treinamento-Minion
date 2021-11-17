@@ -1,31 +1,30 @@
-import java.util.ArrayList;
-
 public class CaminhamentoProfundidade {
-	private boolean[] marked;
+	private boolean[] listaVerticesVisitados;
 	private int[] edgeTo;
 	private int verticeInicial; 
+	private int tempo = 0; //tempo total executado
 	
-	public CaminhamentoProfundidade(Graph g, int vInicial) {
+	public CaminhamentoProfundidade(Graph grafo, int vInicial) {
 		this.verticeInicial = vInicial;
-		marked = new boolean[g.getQtdVertices()]; // inicializa todos os vértices com false(não visitados)
-		edgeTo = new int[g.getQtdVertices()]; // e com zero
-		dfs(g, vInicial);
+		listaVerticesVisitados = new boolean[grafo.getQtdVertices()]; // inicializa todos os vértices com false(não visitados)
+		edgeTo = new int[grafo.getQtdVertices()]; // e com zero
+		dfs(grafo, vInicial);
 	}
 
-	private void dfs(Graph g, int posicaoVertice) {
-		Vertice v = g.getVerticeDaPosicao(posicaoVertice);
+	private void dfs(Graph grafo, int posicaoVertice) {
+		Vertice v = grafo.getVerticeDaPosicao(posicaoVertice);
 
 		System.out.println("Entrei em " + posicaoVertice + "--> "+ v.getNome());
 
 		//marca o vértice como visitado
-		marked[posicaoVertice] = true;
-		for (int posicaoAdjacente : g.getListaPosicaoVerticesAdj(posicaoVertice)) {
+		listaVerticesVisitados[posicaoVertice] = true;
+		for (int posicaoAdjacente : grafo.getListaPosicaoVerticesAdj(posicaoVertice)) {
 			
-			Vertice vAdj = g.getVerticeDaPosicao(posicaoAdjacente);
+			Vertice vAdj = grafo.getVerticeDaPosicao(posicaoAdjacente);
 			System.out.println("Adjacente: " + posicaoAdjacente + "--> "+ vAdj.getNome());
-			if (!marked[posicaoAdjacente]) {
+			if (!listaVerticesVisitados[posicaoAdjacente]) {
 				edgeTo[posicaoAdjacente] = posicaoVertice;
-				dfs(g, posicaoAdjacente);
+				dfs(grafo, posicaoAdjacente);
 			}
 		}
 		System.out.println("Terminei " + posicaoVertice + "--> "+ v.getNome());
