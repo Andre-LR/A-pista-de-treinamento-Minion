@@ -1,9 +1,13 @@
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Vertice implements Comparable<Vertice>{
     private String nome;
     private int tempo;
+    //Vertices adjacentes
     private ArrayList<Vertice> verticesAdj = new ArrayList<>();
+    //Posição do vértice no grafo
     private int posicao;
     //Vértices que precisam ser destruidos antes de ficar habilitado
     private ArrayList<Vertice> listaDependencias = new ArrayList<>(); 
@@ -36,21 +40,21 @@ public class Vertice implements Comparable<Vertice>{
     public int getTempo() {
         return tempo;
     }
+
+    public void setTempo(int novoTempo){
+        this.tempo = novoTempo;
+    }
     
     public ArrayList<Vertice> getVerticesAdj() {
         return verticesAdj;
     }
 
-    public ArrayList<Integer> getListaPosicaoVerticesAdj() {
-        ArrayList<Integer> posAdj = new ArrayList<>();
-        for (Vertice vertice : verticesAdj) {
-            posAdj.add(vertice.getPosicao());
-        }
-        return posAdj;
-    }
-
     public void setVerticesAdj(ArrayList<Vertice> verticesAdj) {
         this.verticesAdj = verticesAdj;
+    }
+
+    public void atualizaTempoRestante(int tempoExecutado){
+        tempo = tempo-tempoExecutado;
     }
 
     public String verticesAdjacentesToString(){
@@ -62,17 +66,14 @@ public class Vertice implements Comparable<Vertice>{
         return txt;
     }
 
-    
-
-  
-     /*   
-    @Override public String compareTo(Vertice outroVertice) {
-        Collections.sort(disponiveis, new Comparator<Vertice> () {  
-            public String compare (Vertice v1, Vertice v2) {  
-                return v1.getNome().toUpperCase().compareTo (v2.getNome().toUpperCase());  
-            }  
-        }); 
-    }//implementação }*/
-        
-    
+    //Método para ordenar o Objeto Vértice pelo atributo NOME
+    @Override
+    public int compareTo(Vertice v) {
+        Collator cot = Collator.getInstance(new Locale("pt","BR"));
+        if(v != null){
+            return cot.compare(this.getNome(),v.getNome());
+        }else{
+            return 0;
+        }
+    }
 }

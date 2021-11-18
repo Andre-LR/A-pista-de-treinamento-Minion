@@ -4,9 +4,16 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Sistema {
-    Scanner in = new Scanner(System.in);   
-    Graph graph = new Graph(); 
+    private int qtdMinionsDefinida;
+
+    Scanner in = new Scanner(System.in);
+    //Cria o grafo com qtd minions zerada
+    Graph graph = new Graph(0);
     
+    public void setQtdMinions(int minions){
+        this.qtdMinionsDefinida = minions;
+    }
+
     public boolean ignoraPrimeiraLinha(String valor){
         try {
             "digraph G {".matches("digraph G {");
@@ -16,7 +23,9 @@ public class Sistema {
         return true;
     }
 
-    public void lerArquivo(){                
+    public void lerArquivo(){    
+        //Atualizar qtd minions do grafo            
+        graph.setQtdMinions(qtdMinionsDefinida);
 
         System.out.println("Escolha um arquivo para ser lido");
         System.out.println("cem.txt\ncinco.txt\ndez.txt\n");
@@ -103,8 +112,23 @@ public class Sistema {
         finally {
             //System.out.println(graph.getAllVertices());
             //System.out.println(graph.verticesAdjacentesToString("mhaik"));
-            System.out.println(" ");
-            CaminhamentoProfundidade cp = new CaminhamentoProfundidade(graph, 0);
+            System.out.println(" Lista disponiveis ");
+            graph.atualizaDisponiveis();
+            for (Vertice vertice : graph.getVerticesDisponiveis()) {
+                System.out.println(vertice.getNome());
+            }
+
+
+            System.out.println(" Lista Em andamento ");
+            graph.atualizaVerticesEmAndamento();
+            for (Vertice vertice : graph.getVerticesEmAndamento()) {
+                System.out.println(vertice.getNome());
+            }
+
+            System.out.println(" FIM Lista Em andamento ");
+            int verticeInicial = graph.getPosicaoPrimeiroVerticeEmAndamento(); 
+
+            ExecutaCaminhamento cp = new ExecutaCaminhamento(graph, verticeInicial);
 
             //graph.topoSort();
             System.out.println("Operação finalizada...");

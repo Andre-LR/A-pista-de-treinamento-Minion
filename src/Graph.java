@@ -1,59 +1,23 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Graph {
+    //Qtd de minions que irão executar a pista
+    private int minions;
+    //Todos os vértices do grafo
     public ArrayList<Vertice> listaVertices = new ArrayList<>();
     private int qtdVertices = 0;
     //vertices que podem ser executados, pois não possuem dependencias
-    private ArrayList<Vertice> disponiveis = new ArrayList<>();
+    private ArrayList<Vertice> verticesDisponiveis = new ArrayList<>();
     //vertices que estão em andamento, vértices que estão sendo executados pelos minions
     private ArrayList<Vertice> verticesEmAndamento = new ArrayList<>();
+    //vertices ja executados
+    private ArrayList<Vertice> verticesExecutados = new ArrayList<>();
 
-    public Graph (){
-        for (Vertice vertice : listaVertices) {
-            if(vertice.getListaDependencia().isEmpty()){
-                disponiveis.add(vertice);
-            }
-        }
-        Collections.sort(disponiveis);
-        
+    //Costrutor do Grafo
+    public Graph (int qtdMinions){
+        this.minions = qtdMinions;
     }
-
-    
-
-
-    public ArrayList<Vertice> getListaVertices(){
-        return listaVertices;
-    }
-
-    public int getQtdVertices(){
-        return qtdVertices;
-    }
-
-    public Vertice getVerticeDaPosicao(int posicao){
-        for (Vertice vertice : listaVertices) {
-            if(vertice.getPosicao() == posicao){
-                return vertice;
-            }
-        }
-        return null;
-    }
-
-    //Atualiza os vértices disponiveis para serem executados verificando cada um se possuem algum vertice na sua lista de dependencia
-    public void atualizaDisponiveis(){
-        for (Vertice vertice : listaVertices) {
-            //Se o vertice analisado já não está na lista dos disponiveis
-            //Verifica se ele tem algum vertice na sua lista de dependencia
-            //Se estiver vazia, ele passa a integrar os vertices disponiveis
-            if(!disponiveis.contains(vertice)){
-                if(vertice.getListaDependencia().isEmpty()){
-                    disponiveis.add(vertice);
-                }
-            }
-        }
-    } 
 
     //Adicionar novo vértice no Grafo
     public void addVertice(Vertice vertice) {
@@ -90,6 +54,45 @@ public class Graph {
         if (vertice02.getVerticesAdj() != null)
             vertice02.getVerticesAdj().remove(vertice01);
     }
+
+    public void atualizaVerticesEmAndamento(){
+        //A qtd de vertices em execução deve ser a msm qtd de minions na pista
+        int qtdParaExecutar = minions;
+
+        //Enquanto haver vagas em vertices andamento
+        //Adicionar os primeiros vertices disponiveis em vertices andamento
+        //Remove os vertices que passaram para "em andamento" da lista de disponiveis
+        //Se haver mais minions do que vertices para executar, mandar parar após passar por toda a lista de disponiveis
+        while(verticesEmAndamento.size() < qtdParaExecutar){
+            if(verticesDisponiveis.size() <= 0){
+                System.out.println("Não há vertices disponiveis no momento");
+                break;
+            }else{
+                verticesEmAndamento.add(verticesDisponiveis.get(0));
+                verticesDisponiveis.remove(0);
+            }
+        }
+    }
+
+    //Atualiza os vértices disponiveis em ordem alfabetica
+    //Um vértice entra para a lista dos disponiveis se
+    //O vertice analisado já não está na lista dos disponiveis
+    //Nem na lista dos Em Execução
+    //Nem na lista dos ja executados
+    //Nem se possui algum vertice na sua lista de dependencia
+    public void atualizaDisponiveis(){
+        for (Vertice vertice : listaVertices) {
+            //Verifica se ele tem algum vertice na sua lista de dependencia
+            //Se estiver vazia, ele passa a integrar os vertices disponiveis
+            if(!verticesDisponiveis.contains(vertice) && !verticesEmAndamento.contains(vertice) && !verticesExecutados.contains(vertice) ){
+                if(vertice.getListaDependencia().isEmpty()){
+                    verticesDisponiveis.add(vertice);
+                }
+            }
+        }
+        //Ordena em ordem alfabetica os vertices disponiveis
+        Collections.sort(verticesDisponiveis);
+    } 
     
     //Printa lista de vertices adjacentes de um vértice
     public String verticesAdjacentesToString(String nomeVertice) {
@@ -99,16 +102,6 @@ public class Graph {
             }
         }
         return "Nenhum vértice encontrado com esse nome";
-    }
-
-    //Retornar lista da posição dos vertices adjacentes de um vértice
-    public ArrayList<Integer> getListaPosicaoVerticesAdj(int posicaovertice) {
-        for (Vertice vertice : listaVertices){
-            if(vertice.getPosicao() == posicaovertice){
-               return vertice.getListaPosicaoVerticesAdj();
-            }
-        }
-        return null;
     }
 
     //retorna todos os vértices do grafo e seus vértices adjacentes
@@ -121,45 +114,31 @@ public class Graph {
         return txt;
     }
 
-    public void topoSort() {
-
-        // Fetching the number of nodes in the graph
-        int V = listaVertices.size();
-
-        // List where we'll be storing the topological order
-        ArrayList<Vertice> order = new ArrayList<> ();
-    
-        // Map which indicates if a node is visited (has been processed by the algorithm)
-        Map<Vertice, Boolean> visited = new HashMap<>();
-        for (Vertice v: listaVertices)
-            visited.put(v, false);
-    
-        // We go through the nodes using topoSortRecursivo
-        for (Vertice v: listaVertices) {
-            if (!visited.get(v))
-                topoSortRecursivo(v, visited, order);
-        }
-    
-        // We reverse the order we constructed to get the
-        // proper toposorting
-        Collections.reverse(order);
-        for (Vertice vertice : order) {
-            System.out.println(vertice.getNome());
-        }
-        //System.out.println(order);
+    public int getPosicaoPrimeiroVerticeEmAndamento(){
+        return verticesEmAndamento.get(0).getPosicao();
     }
-    
-    public void topoSortRecursivo(Vertice v, Map<Vertice, Boolean> visited, ArrayList<Vertice> order) {
-        // Mark the current node as visited
-        visited.replace(v, true);
-    
-        // We reuse the algorithm on all adjacent nodes to the current node
-        for (Vertice verticeAdj : v.getVerticesAdj()) {
-            if (!visited.get(verticeAdj))
-                topoSortRecursivo(verticeAdj, visited, order);
-        }
-    
-        // Put the current node in the array
-        order.add(v);
+
+    public Vertice getPrimeiroVerticeEmAndamento(){
+        return verticesEmAndamento.get(0);
+    }
+
+    public ArrayList<Vertice> getVerticesEmAndamento(){
+        return verticesEmAndamento;
+    }
+
+    public ArrayList<Vertice> getVerticesDisponiveis(){
+        return verticesDisponiveis;
+    }
+
+    public ArrayList<Vertice> getVerticesExecutados(){
+        return verticesExecutados;
+    }
+
+    public ArrayList<Vertice> getListaVertices(){
+        return listaVertices;
+    }
+
+    public void setQtdMinions(int minions){
+        this.minions = minions;
     }
 }
