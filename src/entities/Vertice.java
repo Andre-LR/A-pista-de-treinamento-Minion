@@ -1,3 +1,4 @@
+package entities;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -58,10 +59,23 @@ public class Vertice implements Comparable<Vertice>{
     }
 
     public String verticesAdjacentesToString(){
-        String txt = "["+ nome + "] = ";
+        String txt = nome + " = ";
 
         for (Vertice vertice : verticesAdj) {
-            txt = txt + "[" + vertice.getNome() + "]" + "; ";
+            txt = txt + " [" + vertice.getNome() + "] ";
+        }
+        return txt;
+    }
+
+    public String listaDependenciaToString(){
+        String txt = nome + " = ";
+
+        if(listaDependencias.isEmpty()){
+            txt = txt + "O vértice não possui dependência...";
+        }else{
+            for (Vertice vertice : listaDependencias) {
+                txt = txt + " [" + vertice.getNome() + "] ";
+            }
         }
         return txt;
     }
