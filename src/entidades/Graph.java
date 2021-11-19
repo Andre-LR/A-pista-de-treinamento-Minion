@@ -1,4 +1,4 @@
-package entities;
+package entidades;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -66,7 +66,7 @@ public class Graph {
         //Se haver mais minions do que vertices para executar, mandar parar após passar por toda a lista de disponiveis
         while(verticesEmAndamento.size() < qtdParaExecutar){
             if(verticesDisponiveis.size() <= 0){
-                System.out.println("Não há vertices com status DISPONIVEIS para estarem EM EXECUÇÃO no momento...");
+                System.out.println("Não há vertices com status DISPONIVEIS para comporem a lista PARA EXECUTAR no momento...");
                 break;
             }else{
                 verticesEmAndamento.add(verticesDisponiveis.get(0));

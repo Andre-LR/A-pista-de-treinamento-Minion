@@ -1,4 +1,4 @@
-package entities;
+package entidades;
 public class ExecutaCaminhamento {
 	//tempo total executado
 	private int tempoTotal = 0; 

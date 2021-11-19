@@ -1,4 +1,4 @@
-package entities;
+package entidades;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Locale;

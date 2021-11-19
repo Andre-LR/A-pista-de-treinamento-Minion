@@ -1,4 +1,4 @@
-package entities;
+package entidades;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,13 +15,13 @@ public class Sistema {
         this.qtdMinionsDefinida = minions;
     }
 
-    public boolean ignoraPrimeiraLinha(String valor){
-        try {
-            "digraph G {".matches("digraph G {");
-        } catch (Exception e) {
+    public boolean ignoraPrimeiraUltimaLinha(String valor){
+        if(valor.contains("digraph G {") || valor.contains("} ")){
+            return true;
+        }else{
             return false;
         }
-        return true;
+        
     }
 
     public void lerArquivo(){    
@@ -40,14 +40,19 @@ public class Sistema {
             BufferedReader lerArquivo = new BufferedReader(arquivo);
 
             String linha = lerArquivo.readLine();
-
-            if(ignoraPrimeiraLinha(linha)== true){
-                linha = lerArquivo.readLine();
-            }
+            
 
             //CRIAÇÃO DO GRAFO
             while(linha != null){
-                System.out.printf("%s\n",linha); 
+
+                //IGNORA LINHAS QUE NÃO SÃO VÉRTICE
+                if(linha.contains("digraph G {")){
+                    linha = lerArquivo.readLine();
+                }else if(linha.contains("}")){
+                    break;
+                }
+
+                //System.out.printf("%s\n",linha); 
             
                 String vertices[] = linha.split(" -> ");                    
                 
@@ -114,12 +119,22 @@ public class Sistema {
         finally {
             System.out.println("\nMONTAGEM DO GRAFO FINALIZADA...");
 
+            /*
+            *
+            *
+            *
+            *
+            *
             if(graph.getQtdVertices() < 20){
                 System.out.println("\nLista de dependencia de cada vértice: \n");
                 for (Vertice vertice : graph.listaVertices) {
                     System.out.println(vertice.listaDependenciaToString());
                 }
             }
+            *
+            *
+            *
+            */
 
             //Alimenta a lista de vértices disponiveis
             graph.atualizaDisponiveis();
