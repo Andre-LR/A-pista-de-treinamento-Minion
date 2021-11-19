@@ -32,6 +32,9 @@ public class Sistema {
         System.out.println("cem.txt\ncinco.txt\ndez.txt\n");
 
         String path = in.next();
+
+        //Inicio contagem tempo
+        long tempoInicio = System.currentTimeMillis();
         
         System.out.println("\nLEITURA DOS DADOS DO ARQUIVO");
 
@@ -144,6 +147,11 @@ public class Sistema {
             int verticeInicial = graph.getPosicaoPrimeiroVerticeEmAndamento(); 
             //Executa o caminhamento do GRAFO pelo VERTICE INICIAL
             ExecutaCaminhamento cp = new ExecutaCaminhamento(graph, verticeInicial);
+
+             //Final contagem tempo
+            long tempoFinal = System.currentTimeMillis();
+            long tempoTotal = tempoFinal-tempoInicio;
+            System.out.println("Tempo Total: "+(tempoTotal));
         }
     }
 }
