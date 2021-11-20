@@ -14,7 +14,6 @@ public class ExecutaCaminhamento {
 
 			//Descobre qual vertice tem o menor tempo
 			for (Vertice vertice : grafo.getVerticesEmAndamento()) {
-				System.out.println("\nO vértice " + vertice.getNome() + " está em execução");
 
 				if(vertice.getTempo() <= menorTempo){
 					menorTempo = vertice.getTempo();
