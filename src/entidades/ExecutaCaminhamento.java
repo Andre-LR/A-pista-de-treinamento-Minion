@@ -57,4 +57,9 @@ public class ExecutaCaminhamento {
 		System.out.println("Tempo total de execução da pista: " + tempoTotal);
 	}
 
+
+	public int getTempoTotal() {
+		return tempoTotal;
+	}
+
 }
