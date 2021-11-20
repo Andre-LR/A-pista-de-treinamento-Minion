@@ -133,16 +133,6 @@ public class Sistema {
 
 
 
-
-
-
-
-
-
-
-
-
-
     public void lerArquivoMelhorDesemepnho(){    
 
         System.out.println("Escolha um arquivo de obstáculos para ser lido");
