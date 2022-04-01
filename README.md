@@ -5,3 +5,5 @@ O problema consiste em uma pista de obstáculos em formato de Grafo que devem se
 na ordem correta, até que não reste mais nenhum obstáculo restante. O objetivo do problema
 consiste em descobrir a menor quantidade de minions a ser empregado para resolver o problema no
 menor tempo.
+
+No relatório anexo ao repositório contém a introdução completa do exercício bem como a explicação da solução aplicada.
